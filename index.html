@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Finanças Pessoais</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -165,42 +164,42 @@ tbody tr:hover td{background:var(--bg3)}
   </div>
   <nav class="sb-nav">
     <div class="sb-section">Visão geral</div>
-    <div class="nav on" data-p="overview" onclick="goPage('overview')">
+    <div class="nav on" data-p="overview">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
       Dashboard
     </div>
-    <div class="nav" data-p="anual" onclick="goPage('anual')">
+    <div class="nav" data-p="anual">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
       Consolidado anual
     </div>
     <div class="sb-section">Detalhes</div>
-    <div class="nav" data-p="receitas" onclick="goPage('receitas')">
+    <div class="nav" data-p="receitas">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
       Receitas
       <span class="nav-dot" style="background:var(--green)"></span>
     </div>
-    <div class="nav" data-p="despesas" onclick="goPage('despesas')">
+    <div class="nav" data-p="despesas">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
       Despesas
       <span class="nav-dot" style="background:var(--red)"></span>
     </div>
-    <div class="nav" data-p="cartao" onclick="goPage('cartao')">
+    <div class="nav" data-p="cartao">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
       Cartão de crédito
       <span class="nav-dot" style="background:var(--blue)"></span>
     </div>
-    <div class="nav" data-p="investimentos" onclick="goPage('investimentos')">
+    <div class="nav" data-p="investimentos">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
       Investimentos
       <span class="nav-dot" style="background:var(--purple)"></span>
     </div>
     <div class="sb-section">Planejamento</div>
-    <div class="nav" data-p="projecoes" onclick="goPage('projecoes')">
+    <div class="nav" data-p="projecoes">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
       Projeções
       <span class="nav-dot" style="background:var(--amber)"></span>
     </div>
-    <div class="nav" data-p="settings" onclick="goPage('settings')">
+    <div class="nav" data-p="settings">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
       Configurações
     </div>
@@ -434,7 +433,9 @@ tbody tr:hover td{background:var(--bg3)}
 </main>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
+document.addEventListener('DOMContentLoaded', function() {
 const MN=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const MS=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 const PROXY='https://api.allorigins.win/raw?url=';
@@ -579,7 +580,7 @@ function renderInv(){
   const tM={};data.forEach(r=>{const t=r.tipo||'Outros';tM[t]=(tM[t]||0)+num(r,'valor_atual','valor_aportado');});
   const ents=Object.entries(tM);
   dkc('cInvTipo');
-  if(ents.length){S.charts['cInvTipo']=new Chart(document.getElementById('cInvTipo'),{type:'doughnut',data:{labels:ents.map(e=>e[0]),datasets:[{data:ents.map(e=>e[1]),backgroundColor:COLORS.slice(0,ents.length),borderColor:'#0F1117',borderWidth:2,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#9BA3B8',font:{size:10,family:'Outfit'},padding:12,boxWidth:8,usePointStyle:true}}}}}});}
+  if(ents.length){S.charts['cInvTipo']=new Chart(document.getElementById('cInvTipo'),{type:'doughnut',data:{labels:ents.map(e=>e[0]),datasets:[{data:ents.map(e=>e[1]),backgroundColor:COLORS.slice(0,ents.length),borderColor:'#0F1117',borderWidth:2,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#9BA3B8',font:{size:10,family:'Outfit'},padding:12,boxWidth:8,usePointStyle:true}}}}});}
   const rEs=data.map(r=>{const ap=num(r,'valor_aportado');const at=num(r,'valor_atual');return{n:r.ativo_fundo||r.ativo||r.descricao||'?',v:ap>0?((at-ap)/ap*100):null};}).filter(x=>x.v!==null).sort((a,b)=>b.v-a.v).slice(0,6);
   const mxR=Math.max(...rEs.map(e=>Math.abs(e.v)),1);
   document.getElementById('inv-rent').innerHTML=rEs.length?rEs.map(e=>`<div class="prog"><div class="prog-hd"><span class="prog-name">${e.n}</span><span class="prog-val ${e.v>=0?'green':'red'}">${e.v>=0?'+':''}${e.v.toFixed(2)}%</span></div><div class="prog-track"><div class="prog-fill" style="width:${Math.round(Math.abs(e.v)/mxR*100)}%;background:${e.v>=0?'#00E096':'#FF5C7A'}"></div></div></div>`).join(''):'<div class="empty-row">Sem dados de rentabilidade</div>';
@@ -702,8 +703,19 @@ document.querySelectorAll('.nav[data-p]').forEach(el=>{
 });
 
 // ── INIT ──────────────────────────────────────────────
+
+// expose to window so inline onclick attributes work
+window.goPage   = goPage;
+window.chMon    = chMon;
+window.togAll   = togAll;
+window.syncAll  = syncAll;
+window.saveURLs = saveURLs;
+window.loadDemo = loadDemo;
+
 upLbls();
 if(Object.values(S.urls).some(Boolean))syncAll();else loadDemo();
+
+}); // end DOMContentLoaded
 </script>
 </body>
 </html>
