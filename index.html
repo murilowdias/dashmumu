@@ -165,42 +165,42 @@ tbody tr:hover td{background:var(--bg3)}
   </div>
   <nav class="sb-nav">
     <div class="sb-section">Visão geral</div>
-    <div class="nav on" data-p="overview">
+    <div class="nav on" data-p="overview" onclick="goPage('overview')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
       Dashboard
     </div>
-    <div class="nav" data-p="anual">
+    <div class="nav" data-p="anual" onclick="goPage('anual')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
       Consolidado anual
     </div>
     <div class="sb-section">Detalhes</div>
-    <div class="nav" data-p="receitas">
+    <div class="nav" data-p="receitas" onclick="goPage('receitas')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
       Receitas
       <span class="nav-dot" style="background:var(--green)"></span>
     </div>
-    <div class="nav" data-p="despesas">
+    <div class="nav" data-p="despesas" onclick="goPage('despesas')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
       Despesas
       <span class="nav-dot" style="background:var(--red)"></span>
     </div>
-    <div class="nav" data-p="cartao">
+    <div class="nav" data-p="cartao" onclick="goPage('cartao')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
       Cartão de crédito
       <span class="nav-dot" style="background:var(--blue)"></span>
     </div>
-    <div class="nav" data-p="investimentos">
+    <div class="nav" data-p="investimentos" onclick="goPage('investimentos')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
       Investimentos
       <span class="nav-dot" style="background:var(--purple)"></span>
     </div>
     <div class="sb-section">Planejamento</div>
-    <div class="nav" data-p="projecoes">
+    <div class="nav" data-p="projecoes" onclick="goPage('projecoes')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
       Projeções
       <span class="nav-dot" style="background:var(--amber)"></span>
     </div>
-    <div class="nav" data-p="settings">
+    <div class="nav" data-p="settings" onclick="goPage('settings')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
       Configurações
     </div>
@@ -452,18 +452,6 @@ let S={
   charts:{}
 };
 
-// ── NAV ───────────────────────────────────────────────
-document.querySelectorAll('.nav[data-p]').forEach(el=>{
-  el.addEventListener('click',function(){
-    const p=this.getAttribute('data-p');
-    document.querySelectorAll('.nav').forEach(n=>n.classList.remove('on'));
-    document.querySelectorAll('.page').forEach(pg=>pg.classList.remove('on'));
-    this.classList.add('on');
-    document.getElementById('page-'+p).classList.add('on');
-    renderPage(p);
-  });
-});
-
 // ── UTILS ─────────────────────────────────────────────
 const fmt=v=>'R$ '+Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
 const fmts=v=>{const a=Math.abs(v||0);return(v<0?'-':'')+'R$ '+(a>=1000?(a/1000).toFixed(1)+'k':a.toFixed(0));};
@@ -695,6 +683,23 @@ function loadDemo(){
   document.getElementById('syncLabel').textContent='Demo carregado';
   renderActive();
 }
+
+// ── NAV (wired after all functions are defined) ───────
+function goPage(p){
+  document.querySelectorAll('.nav').forEach(n=>n.classList.remove('on'));
+  document.querySelectorAll('.page').forEach(pg=>pg.classList.remove('on'));
+  const navEl=document.querySelector(`.nav[data-p="${p}"]`);
+  if(navEl)navEl.classList.add('on');
+  const pageEl=document.getElementById('page-'+p);
+  if(pageEl)pageEl.classList.add('on');
+  renderPage(p);
+}
+document.querySelectorAll('.nav[data-p]').forEach(el=>{
+  el.addEventListener('click',function(e){
+    e.stopPropagation();
+    goPage(this.getAttribute('data-p'));
+  });
+});
 
 // ── INIT ──────────────────────────────────────────────
 upLbls();
